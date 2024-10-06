@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Signup</title>
+    <link rel="stylesheet" href="assests/css/style.css">
+</head>
+<body class="loginsignup-body">
+    <div class="sl_container">
+        <div class="sl_header">
+            <div class="sl_text" id="actionText">Sign Up</div>
+            <div class="underline"></div>
+        </div>
+        <div class="sl_inputs">
+            <div class="sl_input" id="nameField">
+                <img src="assests/images/person.png" alt="User Icon" />
+                <input type="text" placeholder="Name" id="nameInput" />
+            </div>
+            <div class="sl_input">
+                <img src="assests/images/email.png" alt="Email Icon" />
+                <input type="email" placeholder="Email" id="emailInput" />
+            </div>
+            <div class="sl_input">
+                <img src="assests/images/password.png" alt="Password Icon" />
+                <input type="password" placeholder="Password" id="passwordInput" />
+            </div>
+        </div>
+        <div class="submit-container">
+            <div class="slsubmit" id="signupBtn">SIGN UP</div>
+            <div class="slsubmit" id="loginBtn">LOGIN</div>
+        </div>
+    </div>
+
+    <script>
+        let action = 'Sign Up'; // Default action
+
+        const actionText = document.getElementById('actionText');
+        const nameField = document.getElementById('nameField');
+        const signupBtn = document.getElementById('signupBtn');
+        const loginBtn = document.getElementById('loginBtn');
+
+        signupBtn.addEventListener('click', () => {
+            action = 'Sign Up';
+            updateUI();
+        });
+
+        loginBtn.addEventListener('click', () => {
+            action = 'Login';
+            updateUI();
+        });
+
+        function updateUI() {
+            if (action === 'Sign Up') {
+                actionText.innerText = 'Sign Up';
+                nameField.style.display = 'flex';
+            } else {
+                actionText.innerText = 'Login';
+                nameField.style.display = 'none';
+            }
+        }
+
+        // Initialize the UI based on the default action
+        updateUI();
+    </script>
+</body>
+</html>

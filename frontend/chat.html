@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative Niha - Chat</title>
+    <link rel="stylesheet" href="assests/css/style.css">
+</head>
+<body>
+    <div class="chat-mainpage">
+        <div class="first-main-div">
+            <div class="left-div">
+                <img src="assests/images/settings (1).png" alt="menu" class="hamburger-icon" onclick="toggleChatHistory()">
+                <h1 class="title">NIHA CHATBOT</h1>
+            </div>
+            <div class="right-div">
+                <div class="profile-title">
+                    <h3>Guest</h3>
+                </div>
+                <div class="profile-icon">
+                    <img src="assests/images/user.png" alt="user">
+                </div>
+                <button class="theme-toggle" onclick="ToggleDarkMode()">
+                    <img src="assests/images/moon.png" alt="toggle theme">
+                </button>
+            </div>
+        </div>
+
+        <div class="second-main-div">
+            <div class="second-main-div-h">
+                <h1 class="task-title">USE NIHA FOR</h1>
+                <a href="/frontend/index.html" class="icon-link">
+                    <img src="assests/images/ai.png" alt="icon" class="ai-icon" style="width: 45px;">
+                </a>
+            </div>
+            <div class="flex-row">
+                <div class="col-4">
+                    <img src="assests/images/application.png" alt="task-1" class="center-img">
+                    <p class="tasks">Describing the contents <br> of an image</p>
+                </div>
+                <div class="col-4">
+                    <img src="assests/images/network.png" alt="task-2" class="center-img">
+                    <p class="tasks">Turning your data into <br> graphs</p>
+                </div>
+                <div class="col-4">
+                    <img src="assests/images/table.png" alt="task-3" class="center-img">
+                    <p class="tasks">Turning your data into <br> Tabular Form</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="third-main-div">
+            <div class="message-tab">
+                <div class="icons-left">
+                    <img src="assests/images/attach.png" alt="attach file" class="icon-1" onclick="openFileExplorer()">
+                    <img src="assests/images/mic.png" alt="voice input" class="icon-2" onclick="startVoiceRecognition()">
+                </div>
+                <input type="text" class="message-input my-input" placeholder="Message NIHA">
+                <div class="icons-right">
+                    <img src="assests/images/up-arrow.png" alt="send" class="icon-3">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chat History Interface (initially hidden) -->
+        <div class="left chat-history" id="chatHistory" style="display:none;">
+            <button class="new_chat_button"><img src="assests/images/sign.png" alt="add"
+                    style="width: 25px; margin-right: 10px;">New Chat</button>
+            <h1 class="chat-title">Chat History</h1>
+
+            <ol class="chatList">
+                <li class="list"><a href="#" class="chats">First Topic of Chat</a><img src="assests/images/delete.png" class="del-icon"></li>
+                <li class="list"><a href="#" class="chats">Second Topic of Chat</a><img src="assests/images/delete.png" class="del-icon"></li>
+                <li class="list"><a href="#" class="chats">Third Topic of Chat</a><img src="assests/images/delete.png" class="del-icon"></li>
+                <li class="list"><a href="#" class="chats">Fourth Topic of Chat</a><img src="assests/images/delete.png" class="del-icon"></li>
+            </ol>
+        </div>
+    </div>
+
+    <script src="assests/js/darkmode.js"></script>
+    <script>
+        // Function to toggle the chat history visibility
+        function toggleChatHistory() {
+            const chatHistory = document.getElementById('chatHistory');
+            if (chatHistory.style.display === 'none' || chatHistory.style.display === '') {
+                chatHistory.style.display = 'block'; // Show chat history
+            } else {
+                chatHistory.style.display = 'none'; // Hide chat history
+            }
+        }
+
+        // Dark Mode toggle function
+        function ToggleDarkMode() {
+            let DarkBtnValue = localStorage.getItem('DarkModeOn') === 'true';
+            DarkBtnValue = !DarkBtnValue;
+            localStorage.setItem('DarkModeOn', DarkBtnValue);
+
+            const head = document.head;
+            const styleElementId = 'custom-scrollbar-style';
+            let styleElement = document.getElementById(styleElementId);
+
+            if (!styleElement) {
+                styleElement = document.createElement('style');
+                styleElement.id = styleElementId;
+                head.appendChild(styleElement);
+            }
+
+            const scrollBarStyle = `::-webkit-scrollbar-track {
+                background-color: #042e0f;
+            }`;
+
+            if (DarkBtnValue) {
+                document.querySelectorAll('*').forEach(function (element) {
+                    element.classList.add('dark-mode');
+                });
+                styleElement.textContent = scrollBarStyle;
+            } else {
+                document.querySelectorAll('*').forEach(function (element) {
+                    element.classList.remove('dark-mode');
+                });
+                styleElement.textContent = ''; 
+            }
+        }
+
+        window.onload = function() {
+            const DarkBtnValue = localStorage.getItem('DarkModeOn') === 'true';
+
+            if (DarkBtnValue) {
+                document.querySelectorAll('*').forEach(function (element) {
+                    element.classList.add('dark-mode');
+                });
+            }
+        }
+
+        // Function to open the file explorer when the attach icon is clicked
+        function openFileExplorer() {
+            const inputElement = document.createElement('input');
+            inputElement.type = 'file';
+            inputElement.click(); // Simulate a click to open the file explorer
+        }
+
+        // Function to start voice recognition
+        function startVoiceRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+
+                recognition.lang = 'en-US'; // You can change this to support different languages
+                recognition.interimResults = false; // Only show final results
+                recognition.maxAlternatives = 1; // One possible result
+
+                // Start the speech recognition
+                recognition.start();
+
+                // Event fired when speech is recognized
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    document.querySelector('.message-input').value = transcript; // Display recognized text in the input field
+                };
+
+                recognition.onspeechend = function() {
+                    recognition.stop(); // Stop the recognition service when the user stops talking
+                };
+
+                recognition.onerror = function(event) {
+                    console.error("Error occurred in speech recognition: ", event.error);
+                };
+            } else {
+                alert('Your browser does not support voice recognition.');
+            }
+        }
+
+    </script>
+</body>
+</html>
